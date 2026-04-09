@@ -5,4 +5,4 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
-Route::post('/payments', [PaymentController::class, 'store']);
+Route::post('/payments', [PaymentController::class, 'store'])->middleware('idempotency');
