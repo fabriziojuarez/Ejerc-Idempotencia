@@ -49,7 +49,7 @@ POST **url_de_tu_localhost**/api/payments
 | Headers | Requerido | Valor | Notas |
 |---------|:---------:|-------|-------|
 | Accept | ✔️ | application/json | Permitira traer los errores en formato json |
-| Idempotency-Key | ✔️ | **cualquier valor** | Es lo que permitira saber si la peticion esta cacheada |
+| Idempotency-Key | ✔️ | *"cualquier valor"* | Es lo que permitira saber si la peticion esta en el cache |
 
 ## Estructura de salida
 ### Peticion procesada
