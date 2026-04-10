@@ -27,7 +27,9 @@ DB_DATABASE=
 DB_USERNAME=
 DB_PASSWORD=
 # Para guardar el cache
-CACHE_STORE=file
+CACHE_STORE=file      # en archivos en storage/framework/cache
+# CACHE_STORE=database  # en una tabla en tu BD
+# CACHE_STORE=redis     # en Redis (memoria RAM)
 ```
 ### Correr las migraciones
 ```bash
