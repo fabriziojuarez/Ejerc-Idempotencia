@@ -4,7 +4,8 @@ Segun su definicion, es la propiedad donde una operacion puede realizarse varias
 > En una pasarela de pago, si el cliente presiona dos veces el boton para pagar, el sistema no puede cobrar el doble o generar un doble registro de la compra, solo tiene que procesar la primera vez.
 
 ## Cache
-Es uno de los elementos que emplea 
+Es el sistema de almacenamiento temporal. Laravel permite cambiar el controlador (file, database, redis, memcached) Puedes emplearlo con:
+> use Illuminate\Support\Facades\Cache;
 
 ## Pasos de instalacion del ejercicio
 ### Clonar repositorio
