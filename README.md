@@ -45,11 +45,14 @@ POST **url_de_tu_localhost**/api/payments
 | amount | numeric | ✔️ | min:0 |
 | currency | string | ✔️ | size:3 |
 | description | string | ❌ |  |
-> Nota: En los Headers colocar el siguiente campo: "Idempotency-Key" y darle un valor, esto es lo que le permitira al sistema distinguir si se esta realizando un reintento a una peticion ya dada
 
+| Headers | Requerido | Valor | Notas |
+|---------|:---------:|-------|-------|
+| Accept | ✔️ | application/json | Permitira traer los errores en formato json |
+| Idempotency-Key | ✔️ | **cualquier valor** | Es lo que permitira saber si la peticion esta cacheada |
 
 ## Estructura de salida
-### Primera peticion
+### Peticion procesada
 ```json
 {
   "success": true,
@@ -66,7 +69,7 @@ POST **url_de_tu_localhost**/api/payments
   "replayed": false
 }
 ```
-### Siguientes peticiones
+### Peticion recuperada del cache
 ```json
 {
   "success": true,
