@@ -1,59 +1,85 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## Idempotencia
+Segun su definicion, es la propiedad donde una operacion puede realizarse varias veces sin cambiar el resultado final. Entonces para el contexto de apis se podria decir, que es la caracteristica del sistema en recibir multiples peticiones identicas (ya sea por insistencia del cliente o fallas en la red) y no afectar el resultado esperado
+> Ejemplo: 
+> En una pasarela de pago, si el cliente presiona dos veces el boton para pagar, el sistema no puede cobrar el doble o generar un doble registro de la compra, solo tiene que procesar la primera vez.
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Cache
+Es uno de los elementos que emplea 
 
-## About Laravel
+## Pasos de instalacion del ejercicio
+### Clonar repositorio
+```bash
+git clone git@github.com:fabriziojuarez/Ejerc-Idempotencia.git
+```
+### Instalar dependencias
+```bash
+composer install
+```
+### Definir variables de entorno
+Para este ejercicio solo se requieren las siguientes variables
+```Dotenv
+# Para la conexion a la base de datos
+DB_CONNECTION=
+DB_HOST=
+DB_PORT=
+DB_DATABASE=
+DB_USERNAME=
+DB_PASSWORD=
+# Para guardar el cache
+CACHE_STORE=file
+```
+### Correr las migraciones
+```bash
+php artisan migrate
+```
+En el caso de que te salga error, crea la base de datos primero en tu gestor y luego corres las migraciones
+### Levantar el proyecto
+```bash
+php artisan serve
+```
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Endpoint para el ejercicio
+POST **url_de_tu_localhost**/api/payments
+| Parametros de entrada | Tipo | Requerido | Caracteristicas |
+|-----------------------|------|:---------:|-----------------|
+| amount | numeric | ✔️ | min:0 |
+| currency | string | ✔️ | size:3 |
+| description | string | ❌ |  |
+> Nota: En los Headers colocar el siguiente campo: "Idempotency-Key" y darle un valor, esto es lo que le permitira al sistema distinguir si se esta realizando un reintento a una peticion ya dada
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Estructura de salida
+### Primera peticion
+```json
+{
+  "success": true,
+  "message": "Pago procesado",
+  "data": {
+    "amount": "...",
+    "currency": "...",
+    "status": "accepted",
+    "description": "...",
+    "updated_at": "...",
+    "created_at": "...",
+    "id": ...
+  },
+  "replayed": false
+}
+```
+### Siguientes peticiones
+```json
+{
+  "success": true,
+  "message": "Pago recuperado del cache",
+  "data": {
+    "amount": "...",
+    "currency": "...",
+    "status": "accepted",
+    "description": "...",
+    "updated_at": "...",
+    "created_at": "...",
+    "id": ...
+  },
+  "replayed": true
+}
+```
