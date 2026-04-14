@@ -12,9 +12,10 @@ Es el sistema de almacenamiento temporal. Laravel permite cambiar el controlador
 ```bash
 git clone git@github.com:fabriziojuarez/Ejerc-Idempotencia.git
 ```
-### Instalar dependencias
+### Instalar dependencias y generar una key
 ```bash
 composer install
+php artisan key:generate
 ```
 ### Definir variables de entorno
 Para este ejercicio solo se requieren las siguientes variables
@@ -27,15 +28,22 @@ DB_DATABASE=
 DB_USERNAME=
 DB_PASSWORD=
 # Para guardar el cache
-CACHE_STORE=file      # en archivos en storage/framework/cache
+CACHE_STORE=file        # en archivos en storage/framework/cache
 # CACHE_STORE=database  # en una tabla en tu BD
-# CACHE_STORE=redis     # en Redis (memoria RAM)
+# En caso de que desees emplear redis
+# CACHE_STORE=redis     # en Redis
+# REDIS_CLIENT=predis   # este es cliente que se empleara, por defecto laravel emplea phpredis
+# REDIS_HOST=
+# REDIS_PASSWORD=
+# REDIS_PORT=
 ```
+> Para emplear redis, se debe instalar la libreria predis/predis con:
+> composer require predis/predis
 ### Correr las migraciones
 ```bash
 php artisan migrate
 ```
-En el caso de que te salga error, crea la base de datos primero en tu gestor y luego corres las migraciones
+> En el caso de que te salga error, crea primero la base de datos en tu gestor y luego corre las migraciones
 ### Levantar el proyecto
 ```bash
 php artisan serve
