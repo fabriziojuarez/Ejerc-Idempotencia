@@ -3,5 +3,5 @@ En esta rama se sigue lo establecido en la rama main, solo se implementa el midd
 ## Middleware
 Es una capa de filtracion, se revisa antes de los FormRequest. Tiene como funcion inspeccionar, modificar o rechazar la peticion.
 
-## Diagrama de flujo
+## Diagrama de actividades
 <img width="1059" height="341" alt="image" src="https://github.com/user-attachments/assets/640d3dc7-4a94-4315-8cd8-83e95d832ad3" />
